@@ -85,7 +85,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',  # Dominio del frontend
 ]
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost','recomendacionesnutri.onrender.com' ]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
