@@ -18,7 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-gy&c^^g5m%!rh)b8!+^=!4#@-x#eu@$x64ctf11h+lcgs4=(!('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'recomendacionesnutri.onrender.com']
 
