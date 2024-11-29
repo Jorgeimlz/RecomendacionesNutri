@@ -24,6 +24,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'recomendacionesnutri.onrender.com']
 
 # Application definition
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',  # WhiteNoise para servir archivos estáticos
     'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
