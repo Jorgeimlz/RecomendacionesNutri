@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -118,15 +120,19 @@ WSGI_APPLICATION = 'RecomendacionesNutri.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME': 'RecomendacionesNutriDB',  # Nombre de tu base de datos
+#        'USER': 'postgres',  # Usuario por defecto de PostgreSQL
+#        'PASSWORD': 'familia4',  # Contraseña del usuario
+#        'HOST': 'localhost',  # Host de la base de datos
+#        'PORT': '5432',  # Puerto por defecto de PostgreSQL
+#    }
+#}
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'RecomendacionesNutriDB',  # Nombre de tu base de datos
-        'USER': 'postgres',  # Usuario por defecto de PostgreSQL
-        'PASSWORD': 'familia4',  # Contraseña del usuario
-        'HOST': 'localhost',  # Host de la base de datos
-        'PORT': '5432',  # Puerto por defecto de PostgreSQL
-    }
+    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
 }
 
 
@@ -165,6 +171,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = 'media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
