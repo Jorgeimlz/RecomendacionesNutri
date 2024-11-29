@@ -4,6 +4,10 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.shortcuts import redirect
+
+def redirect_to_admin(request):
+    return redirect('/admin/')
 
 # Configuración del esquema de Swagger
 schema_view = get_schema_view(
@@ -29,6 +33,7 @@ urlpatterns = [
     path('api/ingredientes/', include('ingredientes.urls')),
     path('api/receta-ingredientes/', include('receta_ingrediente.urls')),
     path('api/recetas/', include('recetas.urls')),
+    path('', redirect_to_admin),
 
     # Swagger y Redoc
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
