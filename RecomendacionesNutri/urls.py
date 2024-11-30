@@ -33,6 +33,7 @@ urlpatterns = [
     path('api/receta-ingredientes/', include('receta_ingrediente.urls')),
     path('api/recetas/', include('recetas.urls')),
     path('', redirect_to_admin),
+    path('api/recetas-guardadas/', include('recetas_guardadas.urls')),
 
     # Swagger y Redoc
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

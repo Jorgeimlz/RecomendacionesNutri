@@ -15,19 +15,28 @@ class UsuarioSerializer(serializers.ModelSerializer):
     preferencias_ids = serializers.ListField(
         child=serializers.IntegerField(), write_only=True, required=False
     )
-    password = serializers.CharField(write_only=True, required=True)  # Campo obligatorio y write-only
+    password = serializers.CharField(write_only=True, required=True)
 
     class Meta:
         model = Usuario
         fields = [
             'username', 'email', 'password', 'nombres', 'apellidos',
-            'altura', 'peso', 'macronutrientes','imc',
+            'altura', 'peso', 'macronutrientes', 'imc',
             'preferencias_alimentarias', 'preferencias_ids',
         ]
         extra_kwargs = {
-            'password': {'write_only': True},  # La contraseña solo se escribe y no se devuelve
+            'password': {'write_only': True},
         }
-        
+
+    def validate_email(self, value):
+        if self.instance:  # Actualización de un usuario existente
+            if Usuario.objects.filter(email=value).exclude(pk=self.instance.pk).exists():
+                raise serializers.ValidationError("El correo ya está registrado por otro usuario.")
+        else:  # Creación de un nuevo usuario
+            if Usuario.objects.filter(email=value).exists():
+                raise serializers.ValidationError("El correo ya está registrado VALIDACIÓN PROPIA.")
+        return value
+
     def create(self, validated_data):
         """
         Método para crear un usuario con preferencias alimentarias.
@@ -50,10 +59,11 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
         # Recalcular macronutrientes y calcular IMC después de la creación
         usuario.recalcular_macronutrientes()
-        usuario.imc = usuario.calcular_imc()  # Calcular IMC y guardarlo
-        usuario.save(update_fields=["imc", "macronutrientes"])  # Guardar el IMC y macronutrientes
+        usuario.imc = usuario.calcular_imc()
+        usuario.save(update_fields=["imc", "macronutrientes"])
 
         return usuario
+
     def update(self, instance, validated_data):
         """
         Método para actualizar un usuario y sus preferencias alimentarias.
@@ -69,17 +79,14 @@ class UsuarioSerializer(serializers.ModelSerializer):
         if password:
             instance.password = make_password(password)
 
-        # Actualizar peso y altura
+        # Actualizar el resto de los campos
         instance = super().update(instance, validated_data)
 
-        # Recalcular macronutrientes si el peso o la altura cambian
+        # Recalcular macronutrientes e IMC si el peso o la altura cambian
         if 'peso' in validated_data or 'altura' in validated_data:
             instance.recalcular_macronutrientes()
-
-        # Recalcular IMC si el peso o la altura cambian
-        if 'peso' in validated_data or 'altura' in validated_data:
-            instance.imc = instance.calcular_imc()  # Recalcular el IMC
-            instance.save(update_fields=["imc"])  # Guardar solo el IMC si cambió
+            instance.imc = instance.calcular_imc()
+            instance.save(update_fields=["imc", "macronutrientes"])
 
         return instance
 

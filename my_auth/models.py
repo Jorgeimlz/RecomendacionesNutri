@@ -5,7 +5,7 @@ from preferencias.models import PreferenciaAlimentaria  # Importar desde la app 
 
 
 class Usuario(AbstractUser):
-    email = models.EmailField(unique=True)
+    email = models.EmailField()
     nombres = models.CharField(max_length=100)
     apellidos = models.CharField(max_length=100)
     altura = models.FloatField(null=True, blank=True)  # En metros
