@@ -10,6 +10,12 @@ El backend de NutriRec es la base de una plataforma diseñada para la gestión d
 - **JWT**: Autenticación basada en JSON Web Tokens con `djangorestframework-simplejwt`.
 - **CORS**: Middleware para manejar CORS con `django-cors-headers`.
 - **Gunicorn**: Servidor HTTP para despliegue en producción.
+  
+## Requisitos Previos
+- Python 3.8 o superior.
+- PostgreSQL 12 o superior.
+- Pip y un entorno virtual (opcional pero recomendado).
+
 
 ## Endpoints Principales
 
@@ -50,7 +56,8 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-# Estructura de Carpetas
+```
+## Estructura de Carpetas
 
 - **nutri_backend**: Configuración global de Django, incluye `settings.py`, `urls.py` y `wsgi.py`.
 - **apps**:
@@ -69,7 +76,34 @@ DATABASES = {
 - **Gestión de Preferencias**: Filtrado de recetas según preferencias alimentarias.
 - **Recetas Favoritas**: Guardado de recetas y consulta de las más populares.
 
+## Instalación
+
+1. Clona este repositorio:
+   ```bash
+   git clone https://github.com/tu-usuario/nutrirec-backend.git
+   cd nutrirec-backend
 ---
+# Configuración del Proyecto
+
+## Crear y activar un entorno virtual
+```bash
+    python -m venv env
+    source env/bin/activate  # En Windows: env\Scripts\activate
+```
+## Instalar las dependencias del proyecto
+    pip install -r requirements.txt
+### Configurar las variables de entorno
+## Crea un archivo .env con el siguiente contenido:
+
+SECRET_KEY=tu_llave_secreta
+DEBUG=True
+DATABASE_URL=postgres://usuario:contraseña@localhost:5432/nutrirec_db
+Aplicar las migraciones
+python manage.py migrate
+Crear un superusuario
+python manage.py createsuperuser
+Ejecutar el servidor de desarrollo
+python manage.py runserver
 
 # Despliegue
 
