@@ -93,16 +93,19 @@ DATABASES = {
 ## Instalar las dependencias del proyecto
     pip install -r requirements.txt
 ### Configurar las variables de entorno
-## Crea un archivo .env con el siguiente contenido:
 
-SECRET_KEY=tu_llave_secreta
-DEBUG=True
-DATABASE_URL=postgres://usuario:contraseña@localhost:5432/nutrirec_db
-Aplicar las migraciones
+# Crear archivo .env
+echo "SECRET_KEY=tu_llave_secreta" > .env
+echo "DEBUG=True" >> .env
+echo "DATABASE_URL=postgres://usuario:contraseña@localhost:5432/nutrirec_db" >> .env
+
+# Aplicar las migraciones
 python manage.py migrate
-Crear un superusuario
+
+# Crear un superusuario
 python manage.py createsuperuser
-Ejecutar el servidor de desarrollo
+
+# Ejecutar el servidor de desarrollo
 python manage.py runserver
 
 # Despliegue
