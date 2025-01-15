@@ -1,6 +1,8 @@
 from django.apps import AppConfig
 
-
 class RecetasConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
     name = 'recetas'
+
+    def ready(self):
+        # Importamos el módulo de signals para que Django los reconozca
+        import recetas.signals

@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'my_auth',
     'preferencias',
     'ingredientes',
-    'recetas',
+    'recetas.apps.RecetasConfig',
     'receta_ingrediente',
     'categorias',
     'tipos_recetas',
