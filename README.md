@@ -77,8 +77,7 @@ DATABASES = {
 - **Recetas Favoritas**: Guardado de recetas y consulta de las más populares.
 
 
-## PRINCIPIOS SOLID Y PATRONES DE DISEÑO IMPLEMENTADOS (TAREA Aplicar Mejores Practicas en Core MVC)
-# README
+# PRINCIPIOS SOLID Y PATRONES DE DISEÑO IMPLEMENTADOS (TAREA Aplicar Mejores Practicas en Core MVC)
 
 ## 1. Resumen de la Evolución del Proyecto
 
