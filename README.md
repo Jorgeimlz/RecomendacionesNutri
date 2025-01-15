@@ -76,6 +76,77 @@ DATABASES = {
 - **Gestión de Preferencias**: Filtrado de recetas según preferencias alimentarias.
 - **Recetas Favoritas**: Guardado de recetas y consulta de las más populares.
 
+
+## PRINCIPIOS SOLID Y PATRONES DE DISEÑO IMPLEMENTADOS (TAREA Aplicar Mejores Practicas en Core MVC)
+# README
+
+## 1. Resumen de la Evolución del Proyecto
+
+Este proyecto solía tener **toda la lógica** de cálculo nutricional y manejo de unidades directamente en el modelo `Receta`, lo que volvía el código difícil de mantener y poco extensible. Además, cada vez que se agregaba una nueva unidad de medida o lógica adicional (como recomendaciones), se duplicaba el código y se aumentaba la complejidad.
+
+Para solucionar esto, se introdujeron **principios SOLID** y varios **patrones de diseño**, logrando un código más ordenado, mantenible y escalable.
+
+---
+
+## 2. ¿Qué se hacía antes?
+
+1. **Cálculo de valores nutricionales en el modelo**  
+   - El modelo `Receta` calculaba por sí solo las calorías, proteínas, etc., sumando complejidad al modelo.
+
+2. **Unidades de medida acopladas**  
+   - Se utilizaban condicionales dentro del modelo para convertir gramos, kilogramos, tazas, etc.  
+   - Si queríamos agregar una unidad nueva, se modificaba el modelo (violando el principio de Abierto/Cerrado).
+
+3. **Creación de objetos repetitiva**  
+   - Para tests o scripts iniciales, se creaban recetas e ingredientes “a mano” en cada lugar, duplicando lógica.
+
+4. **Falta de separación de responsabilidades**  
+   - El modelo se encargaba de todo: datos, lógica de negocio, cálculo nutricional, etc.
+
+---
+
+## 3. ¿Qué se implementó ahora?
+
+1. **Separación de la lógica nutricional (SRP)**  
+   - Se creó un archivo `services.py` con la clase `RecetaNutricionalService` que se encarga del cálculo de macronutrientes.  
+   - El modelo `Receta` ahora delega ese cálculo, cumpliendo el principio de Responsabilidad Única.
+
+2. **Patrón Strategy para conversiones de unidad**  
+   - Dentro del mismo `services.py`, definimos `UnitConversionStrategy`, un mapa que maneja la conversión de gramos, kilogramos, mililitros, etc.  
+   - Si se desea agregar una nueva unidad, basta con extender este mapa, sin modificar el corazón de la lógica nutricional (principio Abierto/Cerrado).
+
+3. **Patrón Factory para creación de recetas**  
+   - El archivo `factories.py` encapsula la creación de recetas con sus ingredientes, evitando así repetir la misma lógica en distintos lugares del proyecto.
+
+4. **Patrón Observer (opcional)**  
+   - Se añadió (en algunos casos) un sistema de “observadores” que reacciona cada vez que se crea o actualiza una receta, sin acoplar esta lógica al modelo central.
+
+---
+
+## 4. Beneficios de estos cambios
+
+- **Mantenibilidad:** Cada clase o módulo tiene una función clara; los cambios futuros se realizan de forma puntual.  
+- **Extensibilidad:** Agregar nuevas unidades de medida o nueva lógica de recomendación no rompe el código existente.  
+- **Reutilización de código:** Con `factories.py`, la creación de recetas ya no se repite en cada prueba o script.  
+- **Arquitectura más limpia:** Los servicios y patrones hacen que el flujo de datos sea más sencillo de entender y depurar.
+
+---
+
+## 5. Estructura Principal de Archivos
+
+- **`recetas/models.py`:**  
+  - Contiene la clase `Receta`. Incluye un `@property` llamado `valores_nutricionales` que delega el cálculo a `RecetaNutricionalService`.
+- **`recetas/services.py`:**  
+  - `RecetaNutricionalService`: Lógica de cálculo de valores nutricionales.  
+  - `UnitConversionStrategy`: Manejo de conversiones para distintas unidades (Patrón Strategy).
+- **`recetas/factories.py`:**  
+  - `RecetaFactory`: Crea objetos `Receta` con sus ingredientes de manera centralizada (Patrón Factory).
+- *(Opcional)* **`recetas/signals.py` / `recetas/observers.py`:**  
+  - Implementación de un sistema de notificaciones (Patrón Observer) cuando se crea o actualiza una receta.
+
+---
+
+
 ## Instalación
 
 1. Clona este repositorio:
